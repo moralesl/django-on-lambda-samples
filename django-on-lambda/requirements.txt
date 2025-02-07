@@ -2,6 +2,7 @@ django
 mangum
 python-dotenv
 aws-lambda-powertools
-django_pg8000
+psycopg
+psycopg-binary
 aws-xray-sdk
 whitenoise
