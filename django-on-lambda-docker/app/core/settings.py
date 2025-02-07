@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 FORCE_SCRIPT_NAME = '/dev'
 
 STATIC_URL = '/dev/static/'
-STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
