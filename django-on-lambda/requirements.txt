@@ -1,0 +1,7 @@
+django
+mangum
+python-dotenv
+aws-lambda-powertools
+django_pg8000
+aws-xray-sdk
+whitenoise

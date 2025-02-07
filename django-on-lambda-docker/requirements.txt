@@ -1,0 +1,5 @@
+django
+psycopg[binary]
+python-dotenv
+whitenoise
+django-cors-headers==4.3.1

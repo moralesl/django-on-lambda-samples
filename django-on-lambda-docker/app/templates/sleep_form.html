@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --secondary-color: #1e40af;
+      --background-color: #f8fafc;
+      --text-color: #1e293b;
+      --border-radius: 8px;
+      --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      --spacing: 20px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: var(--spacing);
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: var(--primary-color);
+      margin-bottom: var(--spacing);
+      font-weight: 600;
+    }
+
+    form {
+      background: white;
+      padding: var(--spacing);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: var(--spacing);
+    }
+
+    input[type="number"] {
+      padding: 8px 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--border-radius);
+      margin-right: 10px;
+      font-size: 16px;
+      width: 100px;
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .timer {
+      background: white;
+      padding: var(--spacing);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin: var(--spacing) 0;
+    }
+
+    .timer p {
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+
+    .timer p:last-child {
+      border-bottom: none;
+    }
+
+    .timer span {
+      font-weight: 500;
+      color: var(--primary-color);
+    }
+
+    .results {
+      background: white;
+      padding: var(--spacing);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      min-height: 50px;
+    }
+  </style>
+</head>
+
+
+<body>
+  <h1>Sleep Test</h1>
+  <form id="sleepForm" onsubmit="handleSubmit(event)">
+    <label for="seconds">Sleep time (seconds):</label>
+    <input type="number" id="seconds" name="seconds" min="1" max="900" required>
+    <button type="submit">Sleep</button>
+  </form>
+
+  <div class="timer">
+    <p>Current Time: <span id="currentTime">-</span></p>
+    <p>Start time: <span id="startTime">-</span></p>
+    <p>End time: <span id="endTime">-</span></p>
+    <p>Duration: <span id="duration">-</span></p>
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <script>
+    function updateCurrentTime() {
+      const currentTimeSpan = document.getElementById('currentTime');
+      currentTimeSpan.textContent = new Date().toLocaleTimeString();
+    }
+
+    // Add these lines to start the clock
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 1000);
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+
+      const seconds = document.getElementById('seconds').value;
+      console.log(`Got request to sleep for ${seconds} seconds`);
+      const resultsDiv = document.getElementById('results');
+      const startTimeSpan = document.getElementById('startTime');
+      const endTimeSpan = document.getElementById('endTime');
+      const durationSpan = document.getElementById('duration');
+
+      // Record start time
+      const startTime = new Date();
+      startTimeSpan.textContent = startTime.toLocaleTimeString();
+      endTimeSpan.textContent = '-';
+      durationSpan.textContent = '-';
+
+      resultsDiv.textContent = 'Waiting for response...';
+
+      try {
+        const baseUrl = window.location.pathname.includes('/dev') ? '/dev' : '';
+        const response = await fetch(`${baseUrl}/sleep/?seconds=${seconds}`);
+        const text = await response.text();
+
+        // Record end time
+        const endTime = new Date();
+        endTimeSpan.textContent = endTime.toLocaleTimeString();
+
+        // Calculate duration
+        const durationMs = endTime - startTime;
+        durationSpan.textContent = `${(durationMs / 1000).toFixed(2)} seconds`;
+
+        resultsDiv.textContent = text;
+      } catch (error) {
+        resultsDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+infrastructure/.terraform/providers/registry.terraform.io/hashicorp/archive/2.7.0/darwin_arm64/LICENSE.txt
+infrastructure/.terraform/providers/registry.terraform.io/hashicorp/archive/2.7.0/darwin_arm64/terraform-provider-archive_v2.7.0_x5
+infrastructure/.terraform/providers/registry.terraform.io/hashicorp/aws/5.84.0/darwin_arm64/LICENSE.txt
+infrastructure/.terraform/providers/registry.terraform.io/hashicorp/aws/5.84.0/darwin_arm64/terraform-provider-aws_v5.84.0_x5
+infrastructure/.terraform/tmp/source.zip
+infrastructure/.terraform.lock.hcl
+infrastructure/terraform.tfstate
+infrastructure/terraform.tfstate.backup
+infrastructure/.terraform.tfstate.lock.info

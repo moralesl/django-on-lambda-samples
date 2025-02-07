@@ -1,0 +1,6 @@
+aws_region = "eu-central-1"
+project_name     = "django-on-lambda-docker-app"
+db_name          = "django_db"
+db_username      = "django_user"
+db_password      = "password"
+django_secret_key = "my-default-secret-key"
