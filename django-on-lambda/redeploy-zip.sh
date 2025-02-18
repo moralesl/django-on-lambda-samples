@@ -35,7 +35,7 @@ mkdir package
 echo "📥 Installing dependencies to package directory..."
 #pip install -r requirements.txt --no-cache-dir --target package/
 pip install \
-    --platform manylinux2014_x86_64 \
+    --platform manylinux2014_aarch64 \
     --target=package \
     --implementation cp \
     --python-version 3.12 \
