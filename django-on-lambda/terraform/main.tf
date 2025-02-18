@@ -142,6 +142,47 @@ resource "aws_lambda_function" "django" {
   }
 }
 
+resource "aws_lambda_function" "django_snapstart" {
+  filename         = "../deployment-package.zip"
+  function_name    = "${var.project_name}-snapstart"
+  role             = aws_iam_role.lambda.arn
+  handler          = "handler.lambda_handler"
+  runtime          = "python3.12"
+  timeout          = 30
+  memory_size      = 1024
+  architectures    = ["arm64"]
+  
+  # Enable SnapStart for faster cold starts
+  snap_start {
+    apply_on = "PublishedVersions"
+  }
+  publish = true
+
+  # Uncomment to enable source code hash checking
+  source_code_hash = filebase64sha256("../deployment-package.zip")
+
+  environment {
+    variables = {
+      DJANGO_SETTINGS_MODULE = "core.settings"
+      DB_NAME                = var.db_name
+      DB_USER                = var.db_username
+      DB_PASSWORD            = var.db_password
+      DB_HOST                = aws_db_instance.postgresql.endpoint
+      DJANGO_SECRET_KEY      = var.django_secret_key
+    }
+  }
+
+  vpc_config {
+    subnet_ids         = aws_subnet.private[*].id
+    security_group_ids = [aws_security_group.lambda.id]
+  }
+
+  tags = {
+    Name      = "${var.project_name}-lambda-snapstart"
+    SnapStart = "true"
+  }
+}
+
 resource "aws_ecr_repository" "psycopg-docker-app" {
   name                 = "${var.project_name}-psycopg-docker-app"
   image_tag_mutability = "MUTABLE"
