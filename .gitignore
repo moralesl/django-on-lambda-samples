@@ -3,5 +3,6 @@ venv/
 __pycache__/
 *.pyc
 
+staticfiles/
 package
 deployment-package.zip
