@@ -78,8 +78,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 # settings.py
-FORCE_SCRIPT_NAME = '/dev'
+#FORCE_SCRIPT_NAME = '/dev'
 
+#STATIC_URL = '/static/'
 STATIC_URL = '/dev/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
