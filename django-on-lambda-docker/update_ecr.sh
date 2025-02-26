@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Configuration
-AWS_REGION="eu-central-1"
-ECR_REPOSITORY_NAME="django-on-lambda-docker-app"
-IMAGE_TAG="latest"
-AWS_ACCOUNT_ID="690431608027"
+AWS_REGION="us-west-2"
+ECR_REPOSITORY_NAME="hackathon/django"
+LAMBDA_FUNCTION_NAME="django-test"
+IMAGE_TAG="luis"
+AWS_ACCOUNT_ID="915188564502"
 
 export AWS_PAGER=""
 
@@ -56,7 +57,7 @@ check_status "Image push"
 print_status "Updating Lambda function..."
 aws lambda update-function-code \
     --region $AWS_REGION \
-    --function-name $ECR_REPOSITORY_NAME \
+    --function-name $LAMBDA_FUNCTION_NAME \
     --image-uri $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY_NAME:$IMAGE_TAG
 check_status "Lambda function update"
 
@@ -64,14 +65,14 @@ check_status "Lambda function update"
 print_status "Waiting for Lambda update to complete..."
 aws lambda wait function-updated \
     --region $AWS_REGION \
-    --function-name $ECR_REPOSITORY_NAME
+    --function-name $LAMBDA_FUNCTION_NAME
 check_status "Lambda update completion"
 
 # Verify the update
 print_status "Verifying Lambda function configuration..."
 aws lambda get-function \
     --region $AWS_REGION \
-    --function-name $ECR_REPOSITORY_NAME \
+    --function-name $LAMBDA_FUNCTION_NAME \
     --query 'Configuration.[LastUpdateStatus,State,LastModified]' \
     --output table
 check_status "Configuration verification"
